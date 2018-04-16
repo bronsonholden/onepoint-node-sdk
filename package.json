@@ -1,0 +1,38 @@
+{
+  "name": "onepoint-node-sdk",
+  "version": "0.1.0",
+  "description": "OnePoint HCM REST API Node.js SDK",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@bitbucket.org/stria/onepoint-node-sdk.git"
+  },
+  "keywords": [
+    "one",
+    "point",
+    "onepoint",
+    "sdk",
+    "node",
+    "javascript",
+    "hcm",
+    "human",
+    "capital",
+    "management",
+    "report"
+  ],
+  "author": "Paul Holden",
+  "license": "UNLICENSED",
+  "homepage": "https://bitbucket.org/stria/onepoint-node-sdk#readme",
+  "dependencies": {
+    "async": "^2.6.0",
+    "lodash": "^4.17.5",
+    "moment": "^2.22.0",
+    "request": "^2.85.0"
+  },
+  "devDependencies": {
+    "winston": "^2.4.1"
+  }
+}
