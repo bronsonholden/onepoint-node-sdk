@@ -16,8 +16,8 @@ async.waterfall([
 		});
 	},
 	(onePoint, callback) => {
-		onePoint.listReports((err, data) => {
-			callback(err, onePoint, data);
+		onePoint.listReports((err, reports) => {
+			callback(err, onePoint, reports);
 		});
 	},
 	(onePoint, reports, callback) => {
