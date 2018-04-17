@@ -25,8 +25,26 @@ async.waterfall([
 		});
 	},
 	(onePoint, data, callback) => {
-		console.log(data);
 		callback(null, onePoint);
+	},
+	(onePoint, callback) => {
+		onePoint.getReport({
+			where: {
+				savedName: 'Cost Center Level 3 JIDs'
+			}
+		}, (err, reports) => {
+			async.eachSeries(reports, (report, callback) => {
+				onePoint.runReport(report, (err, data) => {
+					if (err) {
+						return callback(err);
+					}
+
+					callback();
+				});
+			}, (err) => {
+				callback(err, onePoint);
+			});
+		});
 	}
 ], (err, onePoint) => {
 	if (err) {
