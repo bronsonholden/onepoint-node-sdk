@@ -1,34 +1,31 @@
-const async = require('async');
+const chai = require('chai');
+const assert = chai.assert;
+const expect = chai.expect;
 const OnePoint = require('../index');
 const env = require('./env.js');
 
-async.waterfall([
-  (callback) => {
-    callback(null, new OnePoint(env));
-  },
-  (onePoint, callback) => {
+describe('list-report', function () {
+  var onePoint;
+
+  this.timeout(10000);
+
+  before(function (done) {
+    onePoint = new OnePoint(env);
     onePoint.connect((err) => {
-      if (err) {
-        return callback(err);
-      }
-
-      callback(null, onePoint);
+      expect(err).to.not.exist;
+      done();
     });
-  },
-  (onePoint, callback) => {
+  });
+
+  after(function (done) {
+    onePoint.close(done);
+  });
+
+  it('lists reports', function (done) {
     onePoint.listReports((err, reports) => {
-      callback(err, onePoint, reports);
+      expect(err).to.not.exist;
+      expect(reports).to.be.an('array');
+      done();
     });
-  },
-  (onePoint, reports, callback) => {
-    callback(null, onePoint);
-  }
-], (err, onePoint) => {
-  if (err) {
-    console.log(err);
-  }
-
-  onePoint.close(() => {
-    process.exit(0);
   });
 });
