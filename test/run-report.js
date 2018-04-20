@@ -1,5 +1,5 @@
+const { describe, it, before } = require('mocha');
 const chai = require('chai');
-const assert = chai.assert;
 const expect = chai.expect;
 const OnePoint = require('../index');
 const env = require('./env.js');
@@ -44,7 +44,7 @@ describe('run-report', function () {
       expect(report).to.be.an('object');
       done();
     });
-  })
+  });
 
   it('runs multiple reports', function (done) {
     onePoint.runReport([
@@ -62,6 +62,6 @@ describe('run-report', function () {
       expect(err).to.not.exist;
       expect(reports).to.be.an('array');
       done();
-    })
+    });
   });
 });

@@ -1,6 +1,5 @@
-const _ = require('lodash');
+const { describe, it } = require('mocha');
 const chai = require('chai');
-const assert = chai.assert;
 const expect = chai.expect;
 const OnePoint = require('../index');
 const env = require('./env.js');
@@ -62,5 +61,5 @@ describe('client', function () {
     onePoint.close(() => {
       done();
     });
-  })
+  });
 });

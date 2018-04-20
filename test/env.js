@@ -2,7 +2,7 @@ const dotenv = require('dotenv');
 
 dotenv.config({
   path: './.env'
-})
+});
 
 module.exports = {
   username: process.env.ONEPOINT_USERNAME,
