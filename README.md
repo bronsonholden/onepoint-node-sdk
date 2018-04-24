@@ -32,6 +32,21 @@ onePoint.connect((err) => {
 });
 ```
 
+#### Disconnecting
+
+After a connected client is closed, it will reject any further requests.
+Once it has completed all requests that are currently in the queue, the
+callback triggers.
+
+```js
+// 1) close() is called
+onePoint.close(() => {
+  // 3) All enqueued requests are now complete and the client is disconnected
+});
+
+// 2) Any further requests return an error
+```
+
 ### Reports
 
 When dealing with reports, you can pass an options object with a query-like
