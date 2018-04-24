@@ -76,5 +76,5 @@ describe('client', function () {
       expect(data).to.not.exist;
       done();
     });
-  })
+  });
 });

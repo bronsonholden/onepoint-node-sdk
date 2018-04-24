@@ -1,4 +1,4 @@
-const { describe, it, before } = require('mocha');
+const { describe, it, before, after } = require('mocha');
 const { expect } = require('chai');
 const OnePoint = require('../index');
 const env = require('./env.js');
