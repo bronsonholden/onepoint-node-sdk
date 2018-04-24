@@ -10,7 +10,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@bitbucket.org/stria/onepoint-node-sdk.git"
+    "url": "git+ssh://git@github.com/paulholden2/onepoint-node-sdk.git"
   },
   "keywords": [
     "one",
