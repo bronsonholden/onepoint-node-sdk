@@ -62,4 +62,19 @@ describe('client', function () {
       done();
     });
   });
+
+  it('rejects requests after closing', function (done) {
+    var onePoint = new OnePoint(env);
+
+    onePoint.close();
+    onePoint.enqueueRequest({
+      method: 'GET',
+      baseUrl: 'www.google.com',
+      uri: '/'
+    }, 0, (err, data) => {
+      expect(err).to.exist;
+      expect(data).to.not.exist;
+      done();
+    });
+  })
 });

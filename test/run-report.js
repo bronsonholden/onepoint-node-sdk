@@ -1,6 +1,5 @@
 const { describe, it, before } = require('mocha');
-const chai = require('chai');
-const expect = chai.expect;
+const { expect } = require('chai');
 const OnePoint = require('../index');
 const env = require('./env.js');
 
@@ -12,6 +11,10 @@ describe('run-report', function () {
   before(function (done) {
     onePoint = new OnePoint(env);
     onePoint.connect(done);
+  });
+
+  after(function (done) {
+    onePoint.close(done);
   });
 
   it('handles invalid report', function (done) {
@@ -26,7 +29,7 @@ describe('run-report', function () {
     });
   });
 
-  it('runs report where ...', function (done) {
+  it('runs report where (savedName)', function (done) {
     onePoint.runReport({
       where: {
         savedName: 'Cost Center Level 3 JIDs'
@@ -38,8 +41,28 @@ describe('run-report', function () {
     });
   });
 
-  it('runs report by explicit name', function (done) {
+  it('runs report where (settingsId)', function (done) {
+    onePoint.runReport({
+      where: {
+        settingsId: 37393032
+      }
+    }, (err, report) => {
+      expect(err).to.not.exist;
+      expect(report).to.be.an('array');
+      done();
+    });
+  });
+
+  it('runs report by name (shorthand)', function (done) {
     onePoint.runReport('Cost Center Level 3 JIDs', (err, report) => {
+      expect(err).to.not.exist;
+      expect(report).to.be.an('array');
+      done();
+    });
+  });
+
+  it('runs report by exact system ID', function (done) {
+    onePoint.runReport(37393032, (err, report) => {
       expect(err).to.not.exist;
       expect(report).to.be.an('object');
       done();

@@ -3,27 +3,23 @@ const { expect } = require('chai');
 const OnePoint = require('../index');
 const env = require('./env.js');
 
-describe('list-report', function () {
+describe('get-report', function () {
   var onePoint;
 
-  this.timeout(10000);
+  this.timeout(30000);
 
   before(function (done) {
     onePoint = new OnePoint(env);
-    onePoint.connect((err) => {
-      expect(err).to.not.exist;
-      done();
-    });
+    onePoint.connect(done);
   });
 
   after(function (done) {
     onePoint.close(done);
   });
 
-  it('lists reports', function (done) {
-    onePoint.listReports((err, reports) => {
+  it('get report (exact)', function (done) {
+    onePoint.getReport(37393032, (err, report) => {
       expect(err).to.not.exist;
-      expect(reports).to.be.an('array');
       done();
     });
   });
