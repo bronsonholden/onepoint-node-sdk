@@ -26,7 +26,7 @@
     "report"
   ],
   "author": "Paul Holden",
-  "license": "UNLICENSED",
+  "license": "MIT",
   "homepage": "https://bitbucket.org/stria/onepoint-node-sdk#readme",
   "dependencies": {
     "async": "^2.6.0",
