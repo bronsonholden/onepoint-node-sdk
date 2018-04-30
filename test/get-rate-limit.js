@@ -27,6 +27,8 @@ describe('run-report', function () {
 
   it('returns current calls and threshold', function (done) {
     onePoint.listReports((err, reports) => {
+      expect(err).to.not.exist;
+
       var limit = onePoint.getRateLimit();
 
       expect(limit).to.exist;
