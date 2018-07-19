@@ -7,7 +7,7 @@
     "lint": "eslint .",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
     "test": "nyc mocha test/*.js",
-    "doc": "jsdoc lib -r -d ./.docs"
+    "doc": "jsdoc lib -r -d ./docs"
   },
   "repository": {
     "type": "git",
