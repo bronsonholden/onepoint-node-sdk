@@ -69,22 +69,22 @@ describe('rate limits', function () {
     });
   });
 
-  it('runs multiple reports', function (done) {
-    onePoint.runReport([
-      {
-        where: {
-          savedName: 'Cost Center Level 3 JIDs'
-        }
-      },
-      {
-        where: {
-          savedName: 'Labor by Cost Center'
-        }
-      }
-    ], (err, reports) => {
-      expect(err).to.not.exist;
-      expect(reports).to.be.an('array');
-      done();
-    });
-  });
+  // it('runs multiple reports', function (done) {
+  //   onePoint.runReport([
+  //     {
+  //       where: {
+  //         savedName: 'Cost Center Level 3 JIDs'
+  //       }
+  //     },
+  //     {
+  //       where: {
+  //         savedName: 'Labor by Cost Center'
+  //       }
+  //     }
+  //   ], (err, reports) => {
+  //     expect(err).to.not.exist;
+  //     expect(reports).to.be.an('array');
+  //     done();
+  //   });
+  // });
 });
