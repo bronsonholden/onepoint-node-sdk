@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: close.js</title>
+    <title>JSDoc: Source: list-reports.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: close.js</h1>
+    <h1 class="page-title">Source: list-reports.js</h1>
 
     
 
@@ -26,26 +26,46 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>/**
+            <pre class="prettyprint source linenums"><code>const hostname = require('./hostname');
+const _ = require('lodash');
+
+/**
  * @memberof OnePoint
  * @instance
- * @param {function} callback - If provided, function will be called once client logs out.
+ * @param {function} callback - Called once reports and metadata have been retrieved.
  */
-function close(callback) {
-  this.closing = true;
+function listReports(callback) {
+  var params = {
+    method: 'GET',
+    baseUrl: hostname(1),
+    uri: '/reports',
+    headers: {
+      'Accept': 'application/json',
+      'Authentication': `bearer ${this.accessToken}`
+    },
+    qs: {
+      type: 'Saved',
+      company: this.companyShortName
+    }
+  };
 
-  if (!callback) {
-    return;
-  }
+  this.enqueueRequest(params, 1, (err, data) => {
+    if (err) {
+      return callback(err);
+    }
 
-  if (this.queue.length() === 0 &amp;&amp; this.queue.running() === 0) {
-    setImmediate(callback);
-  } else {
-    this.queue.drain = callback;
-  }
+    var res = _.map(data.reports, (r) => {
+      return {
+        settingsId: r.SettingId,
+        savedName: r.SavedName
+      };
+    });
+
+    callback(null, res);
+  });
 };
 
-module.exports = close;
+module.exports = listReports;
 </code></pre>
         </article>
     </section>

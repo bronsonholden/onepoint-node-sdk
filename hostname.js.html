@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: close.js</title>
+    <title>JSDoc: Source: hostname.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: close.js</h1>
+    <h1 class="page-title">Source: hostname.js</h1>
 
     
 
@@ -27,25 +27,15 @@
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>/**
- * @memberof OnePoint
- * @instance
- * @param {function} callback - If provided, function will be called once client logs out.
+ * Get the REST API endpoint for a particular version of the API.
+ *
+ * @param {number|string} version - Which version to get a REST API endpoint for.
  */
-function close(callback) {
-  this.closing = true;
-
-  if (!callback) {
-    return;
-  }
-
-  if (this.queue.length() === 0 &amp;&amp; this.queue.running() === 0) {
-    setImmediate(callback);
-  } else {
-    this.queue.drain = callback;
-  }
+function hostname(version) {
+  return `https://secure.saashr.com/ta/rest/v${version}/`;
 };
 
-module.exports = close;
+module.exports = hostname;
 </code></pre>
         </article>
     </section>

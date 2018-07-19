@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: close.js</title>
+    <title>JSDoc: Source: get-report.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: close.js</h1>
+    <h1 class="page-title">Source: get-report.js</h1>
 
     
 
@@ -26,26 +26,48 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>/**
+            <pre class="prettyprint source linenums"><code>const _ = require('lodash');
+
+/**
  * @memberof OnePoint
  * @instance
- * @param {function} callback - If provided, function will be called once client logs out.
+ * @param {(object|number)} options - Report ID or query object.
+ * @param {function} callback - Called once the report info is retrieved.
  */
-function close(callback) {
-  this.closing = true;
+function getReport(options, callback) {
+  var asArray = true;
 
-  if (!callback) {
-    return;
+  if (typeof options === 'number') {
+    asArray = false;
+    options = {
+      where: {
+        settingsId: options
+      }
+    };
   }
 
-  if (this.queue.length() === 0 &amp;&amp; this.queue.running() === 0) {
-    setImmediate(callback);
-  } else {
-    this.queue.drain = callback;
+  if (!_.has(options, 'where')) {
+    return this.listReports(callback);
   }
+
+  var where = _.get(options, 'where');
+
+  this.listReports((err, reports) => {
+    if (err) {
+      return callback(err);
+    }
+
+    var results = _.filter(reports, where);
+
+    if (results.length === 0) {
+      callback(new Error('Invalid report: ' + where));
+    } else {
+      callback(null, results.length === 1 &amp;&amp; !asArray ? results[0] : results);
+    }
+  });
 };
 
-module.exports = close;
+module.exports = getReport;
 </code></pre>
         </article>
     </section>

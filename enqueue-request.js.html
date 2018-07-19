@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: close.js</title>
+    <title>JSDoc: Source: enqueue-request.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: close.js</h1>
+    <h1 class="page-title">Source: enqueue-request.js</h1>
 
     
 
@@ -29,23 +29,22 @@
             <pre class="prettyprint source linenums"><code>/**
  * @memberof OnePoint
  * @instance
- * @param {function} callback - If provided, function will be called once client logs out.
+ * @param {object} req - The request to enqueue for the client.
+ * @param {number} priority - The priority index for this request. Higher priority requests have lower priority indices.
  */
-function close(callback) {
-  this.closing = true;
-
-  if (!callback) {
-    return;
-  }
-
-  if (this.queue.length() === 0 &amp;&amp; this.queue.running() === 0) {
-    setImmediate(callback);
+function enqueueRequest(req, priority, callback) {
+  if (this.closing) {
+    process.nextTick(() => {
+      callback(new Error('Client is currently shutting down'));
+    });
   } else {
-    this.queue.drain = callback;
+    this.queue.push({
+      request: req
+    }, priority, callback);
   }
 };
 
-module.exports = close;
+module.exports = enqueueRequest;
 </code></pre>
         </article>
     </section>

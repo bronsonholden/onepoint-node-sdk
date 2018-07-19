@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: close.js</title>
+    <title>JSDoc: Source: send-request.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: close.js</h1>
+    <h1 class="page-title">Source: send-request.js</h1>
 
     
 
@@ -26,26 +26,42 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>/**
+            <pre class="prettyprint source linenums"><code>const request = require('request');
+const _ = require('lodash');
+
+/**
  * @memberof OnePoint
  * @instance
- * @param {function} callback - If provided, function will be called once client logs out.
+ * @param {object} req - The request to send.
+ * @param {function} callback - Called with the HTTP response and body.
  */
-function close(callback) {
-  this.closing = true;
+function sendRequest(req, callback) {
+  request(req, (err, res, body) => {
+    var contentType = _.get(res, [ 'headers', 'content-type' ]);
 
-  if (!callback) {
-    return;
-  }
+    if (contentType &amp;&amp; contentType.indexOf('application/json') > -1 &amp;&amp; typeof body === 'string') {
+      body = JSON.parse(body);
+    }
 
-  if (this.queue.length() === 0 &amp;&amp; this.queue.running() === 0) {
-    setImmediate(callback);
-  } else {
-    this.queue.drain = callback;
-  }
+    if (err) {
+      return callback(err);
+    }
+
+    if (res.statusCode !== 200) {
+      if (!_.has(body, 'errors')) {
+        return callback(new Error(`${res.statusCode} ${res.statusMessage}`));
+      }
+
+      var errors = _.map(_.get(body, 'errors'), (err) => `${err.code} ${err.message}`).join('\n');
+
+      return callback(new Error(errors));
+    }
+
+    callback(null, res, body);
+  });
 };
 
-module.exports = close;
+module.exports = sendRequest;
 </code></pre>
         </article>
     </section>

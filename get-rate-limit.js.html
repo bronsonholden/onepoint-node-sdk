@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: close.js</title>
+    <title>JSDoc: Source: get-rate-limit.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: close.js</h1>
+    <h1 class="page-title">Source: get-rate-limit.js</h1>
 
     
 
@@ -27,25 +27,26 @@
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>/**
+ * Return the latest rate limit metrics.
+ *
  * @memberof OnePoint
  * @instance
- * @param {function} callback - If provided, function will be called once client logs out.
  */
-function close(callback) {
-  this.closing = true;
+function getRateLimit() {
+  var threshold = this.callThreshold;
+  var calls = this.currentCalls;
 
-  if (!callback) {
-    return;
+  if (typeof threshold !== 'number' || typeof calls !== 'number') {
+    return null;
   }
 
-  if (this.queue.length() === 0 &amp;&amp; this.queue.running() === 0) {
-    setImmediate(callback);
-  } else {
-    this.queue.drain = callback;
-  }
+  return {
+    threshold: threshold,
+    calls: calls
+  };
 };
 
-module.exports = close;
+module.exports = getRateLimit;
 </code></pre>
         </article>
     </section>

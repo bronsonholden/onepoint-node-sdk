@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: close.js</title>
+    <title>JSDoc: Source: connect.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: close.js</h1>
+    <h1 class="page-title">Source: connect.js</h1>
 
     
 
@@ -26,26 +26,54 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>/**
+            <pre class="prettyprint source linenums"><code>const hostname = require('./hostname');
+const _ = require('lodash');
+
+/**
  * @memberof OnePoint
  * @instance
- * @param {function} callback - If provided, function will be called once client logs out.
+ * @param {function} callback - Called once the client completes its connection attempt.
  */
-function close(callback) {
-  this.closing = true;
+function connect(callback) {
+  var self = this;
 
-  if (!callback) {
-    return;
-  }
+  var params = {
+    method: 'POST',
+    baseUrl: hostname(1),
+    uri: '/login',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'Api-Key': self.apiKey
+    },
+    body: {
+      credentials: {
+        username: self.username,
+        password: self.password,
+        company: self.companyShortName
+      }
+    },
+    json: true
+  };
 
-  if (this.queue.length() === 0 &amp;&amp; this.queue.running() === 0) {
-    setImmediate(callback);
-  } else {
-    this.queue.drain = callback;
-  }
+  self.enqueueRequest(params, 0, (err, data) => {
+    if (err) {
+      return callback(err);
+    }
+
+    var token = _.get(data, 'token');
+
+    if (!token) {
+      return callback(new Error('No access token received'));
+    }
+
+    self.accessToken = token;
+
+    callback();
+  });
 };
 
-module.exports = close;
+module.exports = connect;
 </code></pre>
         </article>
     </section>
