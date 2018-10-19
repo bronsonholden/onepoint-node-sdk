@@ -3,7 +3,7 @@ const { expect } = require('chai');
 const OnePoint = require('../index');
 const env = require('./env.js');
 
-describe('rate limits', function () {
+describe('run-report', function () {
   var onePoint;
 
   this.timeout(30000);
@@ -63,6 +63,28 @@ describe('rate limits', function () {
 
   it('runs report by exact system ID', function (done) {
     onePoint.runReport(37393032, (err, report) => {
+      expect(err).to.not.exist;
+      expect(report).to.be.an('object');
+      done();
+    });
+  });
+
+  it('runs report with selectors', function (done) {
+    onePoint.runReport(37393044, {
+      company: {
+        short_name: 'STRIA'
+      },
+      selectors: [
+        {
+          name: 'PPDate',
+          parameters: {
+            RangeType: '2',
+            FromDate: '2018-10-15',
+            ToDate: '2018-10-17'
+          }
+        }
+      ]
+    }, (err, report) => {
       expect(err).to.not.exist;
       expect(report).to.be.an('object');
       done();

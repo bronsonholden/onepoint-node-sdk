@@ -3,7 +3,7 @@ const { expect } = require('chai');
 const OnePoint = require('../index');
 const env = require('./env.js');
 
-describe('run-report', function () {
+describe('rate-limit', function () {
   var onePoint;
 
   this.timeout(30000);
