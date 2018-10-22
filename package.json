@@ -1,6 +1,6 @@
 {
   "name": "onepoint-node-sdk",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "OnePoint HCM REST API Node.js SDK",
   "main": "index.js",
   "scripts": {
